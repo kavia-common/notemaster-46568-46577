@@ -1,9 +1,13 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
 
 from src.api.notes import router as notes_router
 from src.db.database import init_db
+
+# Load .env as early as possible for CORS and server config
+load_dotenv()
 
 openapi_tags = [
     {"name": "Health", "description": "Service health and info endpoints."},
@@ -23,7 +27,7 @@ def on_startup() -> None:
     """Initialize database tables on application startup."""
     init_db(drop_all=False)
 
-# CORS configuration
+# CORS configuration from environment (defaults to localhost:3000 for dev)
 cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000")
 allow_origins = [o.strip() for o in cors_origins.split(",") if o.strip()]
 app.add_middleware(
