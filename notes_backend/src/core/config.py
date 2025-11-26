@@ -12,6 +12,8 @@ class Settings:
 
     # Default to a local SQLite database file within the container workspace
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./notes.db")
+    # Comma separated list of allowed origins for CORS
+    CORS_ORIGINS: str = os.getenv("CORS_ORIGINS", "http://localhost:3000")
 
 
 @lru_cache
